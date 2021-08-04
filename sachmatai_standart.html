@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Šachmatai</title>
+	<style>
+		table, th, td {
+		  border: 1px solid black;
+		  border-collapse: collapse;
+		}
+		
+		td {
+ 			height: 50px;
+ 			width: 50px;
+		}
+		.B {
+			background-color: #696969;
+			font-size: 230%;
+			text-align: center;
+		}
+		.A {
+			background-color: #FFFAF0;
+			font-size: 230%;
+			text-align: center;
+		}
+		.sonas  {
+			background-color: #BDB76B;
+			text-align: center;
+			border: 3px solid black;
+		}
+	
+	</style>
+	<script>
+		function bigImg(x,figura,spalva,koord) {
+			
+			//ejimai (figura,koord);
+			
+			vieta = document.getElementById ( "figura");
+			//vieta.innerHTML = figura+ " spalva: "+spalva +" Koordinates: "+koord;
+			
+			rodiklis = 1;
+			var galimybes;
+			
+			if(figura == "K"){
+				galimybes = new Figura ( new Padetis ( koord ) );
+				//console.log(karalius_baltasis);
+			}else{
+				
+			}
+			
+			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {
+			
+				nauja_padetis = galimybes.naujaPadetisPagalGalimaEjima ( i );
+		
+				if ( nauja_padetis != galimybes.padetis_esama ) {
+					
+					pazymeti_langeli ( nauja_padetis,rodiklis ); 
+					
+				}
+			}
+		}
+		
+		function normalImg(x,koord) {
+			
+			vieta = document.getElementById ( "figura");
+			vieta.innerHTML =null ;
+			 
+			rodiklis = 0;
+			 
+			karalius_baltasis = new Figura ( new Padetis ( koord ) );
+			 
+			for ( i = 0; i < karalius_baltasis.galimuEjimuSkaicius(); i++ ) {
+			
+				nauja_padetis = karalius_baltasis.naujaPadetisPagalGalimaEjima ( i );
+				
+				if ( nauja_padetis != karalius_baltasis.padetis_esama ) {
+					
+					pazymeti_langeli ( nauja_padetis,rodiklis ); 
+			
+				}
+			}
+		}
+		
+		function figuros_baltos ( baltieji ) {
+			const map1 = new Map();
+			
+			map1.set('K', '&#x2654;');
+			map1.set('V', '&#x2655;');
+			map1.set('R', '&#x2657;');
+			map1.set('Z', '&#x2658;');
+			map1.set('B', '&#x2656;');
+			map1.set('P', '&#x2659;');
+			
+			for ( i = 0; i < baltieji.length; i++ ) {
+				figuros_reiksme = baltieji[ i ].substring ( 0, 1 );
+				figuros_koordinate = baltieji[ i ].substring ( 1, 3 );
+				
+				vieta = document.getElementById ( figuros_koordinate );
+				
+				vieta.setAttribute("onmouseover", "bigImg(this,'"+figuros_reiksme+"',1,'"+figuros_koordinate+"')"); 
+				vieta.setAttribute("onmouseout", "normalImg(this,'"+figuros_koordinate+"')"); 
+	
+				vieta.innerHTML =map1.get(figuros_reiksme) ;
+			}
+		}
+		
+		function figuros_juodos ( juodieji ) {
+			
+			const map1 = new Map();
+			
+			map1.set('K', '&#x265A;');
+			map1.set('V', '&#x265B;');
+			map1.set('R', '&#x265D;');
+			map1.set('Z', '&#x265E;');
+			map1.set('B', '&#x265C;');
+			map1.set('P', '&#x265F;');
+		
+			for ( i = 0; i < juodieji.length; i++ ) {
+				figuros_reiksme = juodieji[ i ].slice (0,1);
+				figuros_koordinate = juodieji[ i ].slice (1,3);
+				
+				vieta = document.getElementById ( figuros_koordinate);
+				
+				vieta.setAttribute("onmouseover", "bigImg(this,'"+figuros_reiksme+"',0,'"+figuros_koordinate+"')"); 
+				vieta.setAttribute("onmouseout", "normalImg(this,'"+figuros_koordinate+"')"); 
+				
+				vieta.innerHTML = map1.get(figuros_reiksme) ;
+			}
+		}
+		
+		function sudaryti() {
+		
+			juodieji = document.getElementById ( 'juodieji' ).value.split ( ',' );
+			baltieji = document.getElementById ( 'baltieji' ).value.split ( ',' );
+
+			figuros_baltos  ( baltieji );
+			figuros_juodos ( juodieji );			
+		}
+		
+		padeties_raides = [ 'z', 'x', 'y', 'o', 'k', 'l', 'm', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'n', 's', 't', 'u', 'v' ];
+	
+		padeties_galimos_raides = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' ];
+		
+		function Padetis ( eil_padeties )  { 
+			
+			this.horiz = eil_padeties.slice ( 0, 1 );
+		
+			this.vert =  parseInt(eil_padeties.slice ( 1, 2 ));
+		
+			this.pridetiPokyti = function ( pokytis_padeties ) {
+		
+				nr_horiz = padeties_raides.indexOf ( this.horiz );
+				
+				nr_nauj_horiz = nr_horiz + pokytis_padeties.horiz;
+				
+				padeties_raide = padeties_raides [ nr_nauj_horiz ]; 
+				
+				nr_nauj_vert = this.vert + pokytis_padeties.vert;
+				
+				//nauja_padetis = this;
+				console.log(nr_nauj_vert);
+				if ( ( nr_nauj_vert > 0) && ( nr_nauj_vert < 9 )  && ( padeties_galimos_raides.indexOf ( padeties_raide ) != -1 ) ) { // neišejo už lentos ribų
+				
+					console.log("bla bla");
+					return new Padetis ( padeties_raide + nr_nauj_vert ); 
+				}
+				return this;
+			}
+		}
+		
+		function Figura( padetis_esama ) {
+		
+			this.padetis_esama = padetis_esama;
+			
+			this.ejimo_pokyciai = [ { horiz: -1, vert: 1 }, { horiz: 0, vert: 1 }, { horiz: 1, vert: 1 }, { horiz: 1, vert: 0 }, { horiz: 1, vert: -1}, { horiz: 0, vert: -1 }, { horiz: -1, vert: -1 }, { horiz: -1, vert: 0 } ];
+
+			this.galimuEjimuSkaicius = function() {
+				
+				return this.ejimo_pokyciai.length;
+			}
+			
+			this.naujaPadetisPagalGalimaEjima = function ( nr_galimo_ejimo ) {
+				
+				nauja_padetis = this.padetis_esama.pridetiPokyti ( this.ejimo_pokyciai [ nr_galimo_ejimo ] );
+
+				return nauja_padetis;
+			}
+		}
+		
+		function pazymeti_langeli ( nauja_padetis, rodiklis ){
+			
+			if (rodiklis >0){
+				koordinate =nauja_padetis.horiz +nauja_padetis.vert ;
+				document.getElementById ( koordinate).style.backgroundColor="blue";
+			}else{
+				koordinate =nauja_padetis.horiz +nauja_padetis.vert ;
+				document.getElementById ( koordinate).removeAttribute("style");
+			}
+		}
+		
+		
+		
+		/*function K (koord,raides,pradinis) {
+		
+			pradzia = koord.split("");
+			var ejmai = new Array();
+			nr = 0;
+			for(j=0;j<3;j++){
+				for (i=-1;i<2;i++){
+				
+					ejimai[nr]=raides[pradinis+i]+(pradzia[1]+i);
+					nr++;
+				}
+			}
+			
+			vieta = document.getElementById ( ejimai);
+			vieta.innerHTML = map1.get(figuros_reiksme) ;
+		}
+		
+		function ejimai (figura,koord) {
+		
+			var raides = ["a", "b","c","d","e","f","g","h"];
+			pradinis = null;
+			
+			for (i=0;i<raides.length;i++){
+				if (koord.slice(0,1).equals (raides[i])){
+					pradinis = i;
+				}
+			}
+			
+			if (figura == "K"){
+				K (koord,raides,pradinis);
+			}//Paduoti kinamaji kaip funkcija?
+			if (figura != null){
+				figura (koord,raides,pradinis);
+			}
+		
+		}*/
+	</script>	
+</head>
+
+<body>
+	<h1 >Šachmatai</h1>
+	
+		<label for="baltieji"> Baltieji</label><br>
+	<input type="text" id="baltieji" style="width: 700px" value="Kc4,Bf2"><br>
+		<label for="juodieji"> Juodieji</label><br>
+	<input type="text" id="juodieji" style="width: 700px" value="Kc7,Rf5"><br>
+	
+	<input type="button" value="sudaryti" onClick="sudaryti()">
+	
+	<div id="figura"> </div>
+	<table>
+		<tr class ="sonas">
+			<td  > </td>
+			
+			<td  >A</td>
+			<td  >B</td>
+			<td  >C</td>
+			<td  >D</td>
+			<td  >E</td>
+			<td  >F</td>
+			<td  >G</td>
+			<td  >H</td>
+			
+			<td  > </td>
+		</tr>
+		<tr>
+			<td  class ="sonas" >1</td>
+			
+			<td  class="A"  id="a1"></td>
+			<td  class="B"  id="b1"></td>
+			<td  class="A"  id="c1"></td>
+			<td  class="B"  id="d1"></td>
+			<td  class="A"  id="e1"></td>
+			<td  class="B"  id="f1"></td>
+			<td  class="A"  id="g1"></td>
+			<td  class="B"  id="h1"></td>
+			
+			<td  class ="sonas" >1</td>
+		</tr>
+		<tr>
+			<td  class ="sonas">2</td>
+			
+			<td  class="B"  id="a2"></td>
+			<td  class="A"  id="b2"></td>
+			<td  class="B"  id="c2"></td>
+			<td  class="A"  id="d2"></td>
+			<td  class="B"  id="e2"></td>
+			<td  class="A"  id="f2"></td>
+			<td  class="B"  id="g2"></td>
+			<td  class="A"  id="h2"></td>
+			
+			<td  class ="sonas" >2</td>
+		</tr>
+		<tr>
+			<td  class ="sonas">3</td>
+			
+			<td  class="A"  id="a3"></td>
+			<td  class="B"  id="b3"></td>
+			<td  class="A"  id="c3"></td>
+			<td  class="B"  id="d3"></td>
+			<td  class="A"  id="e3"></td>
+			<td  class="B"  id="f3"></td>
+			<td  class="A"  id="g3"></td>
+			<td  class="B"  id="h3"></td>
+			
+			<td  class ="sonas" >3</td>
+		</tr>
+		<tr>
+			<td  class ="sonas">4</td>
+
+			<td  class="B"  id="a4"></td>
+			<td  class="A"  id="b4"></td>
+			<td  class="B"  id="c4"></td>
+			<td  class="A"  id="d4"></td>
+			<td  class="B"  id="e4"></td>
+			<td  class="A"  id="f4"></td>
+			<td  class="B"  id="g4"></td>
+			<td  class="A"  id="h4"></td>
+			
+			<td  class ="sonas" >4</td>
+		</tr>
+		<tr>
+			<td  class ="sonas">5</td>
+			
+			<td  class="A"  id="a5"></td>
+			<td  class="B"  id="b5"></td>
+			<td  class="A"  id="c5"></td>
+			<td  class="B"  id="d5"></td>
+			<td  class="A"  id="e5"></td>
+			<td  class="B"  id="f5"></td>
+			<td  class="A"  id="g5"></td>
+			<td  class="B"  id="h5"></td>
+			
+			<td  class ="sonas" >5</td>
+		</tr>
+		<tr>
+			<td  class ="sonas">6</td>
+			
+			<td  class="B"  id="a6"></td>
+			<td  class="A"  id="b6"></td>
+			<td  class="B"  id="c6"></td>
+			<td  class="A"  id="d6"></td>
+			<td  class="B"  id="e6"></td>
+			<td  class="A"  id="f6"></td>
+			<td  class="B"  id="g6"></td>
+			<td  class="A"  id="h6"></td>
+			
+			<td  class ="sonas" >6</td>
+		</tr>
+		<tr>
+			<td  class ="sonas">7</td>
+			
+			<td  class="A"  id="a7"></td>
+			<td  class="B"  id="b7"></td>
+			<td  class="A"  id="c7"></td>
+			<td  class="B"  id="d7"></td>
+			<td  class="A"  id="e7"></td>
+			<td  class="B"  id="f7"></td>
+			<td  class="A"  id="g7"></td>
+			<td  class="B"  id="h7"></td>
+			
+			<td  class ="sonas" >7</td>
+		</tr>
+		<tr>
+			<td  class ="sonas">8</td>
+			
+			<td  class="B"  id="a8"></td>
+			<td  class="A"  id="b8"></td>
+			<td  class="B"  id="c8"></td>
+			<td  class="A"  id="d8"></td>
+			<td  class="B"  id="e8"></td>
+			<td  class="A"  id="f8"></td>
+			<td  class="B"  id="g8"></td>
+			<td  class="A"  id="h8"></td>
+			
+			<td  class ="sonas" >8</td>
+		</tr>
+		<tr class ="sonas">
+			<td  > </td>
+			
+			<td  >A</td>
+			<td  >B</td>
+			<td  >C</td>
+			<td  >D</td>
+			<td  >E</td>
+			<td  >F</td>
+			<td  >G</td>
+			<td  >H</td>
+			
+			<td  > </td>
+		</tr>
+	</table>
+</body>
+</html> 
