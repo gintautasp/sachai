@@ -1,0 +1,24 @@
+table, th, td {
+		  border: 1px solid black;
+		  border-collapse: collapse;
+		}
+		
+		td {
+ 			height: 50px;
+ 			width: 50px;
+		}
+		.B {
+			background-color: #696969;
+			font-size: 230%;
+			text-align: center;
+		}
+		.A {
+			background-color: #FFFAF0;
+			font-size: 230%;
+			text-align: center;
+		}
+		.sonas  {
+			background-color: #BDB76B;
+			text-align: center;
+			border: 3px solid black;
+		}
