@@ -1,4 +1,20 @@
-		/*	Pelytės užvedimui ir nuvedimui ant figūros reikalingos funkcijos + spalvinimas
+
+		function make_figura ( figura, spalva, koord ) {
+			
+			switch ( figura ) {
+
+				case 'K': galimybes = new Karalius ( new Padetis ( koord ), spalva ); break;
+				case 'Z': galimybes = new Zirgas ( new Padetis ( koord ), spalva ); break;
+				case 'V': galimybes = new Valdove ( new Padetis ( koord ), spalva ); break;
+				case 'B': galimybes = new Bokstas ( new Padetis ( koord ), spalva ); break;
+				case 'R': galimybes = new Rikis ( new Padetis ( koord ), spalva ); break;
+				case 'P': galimybes = new Pestininkas ( new Padetis ( koord ), spalva ); break;
+			}			
+			return galimybes;
+		}
+
+		/**
+		*	Pelytės užvedimui ir nuvedimui ant figūros reikalingos funkcijos + spalvinimas
 		*	
 		*	bigImg - suveikia užvedus pelytę ant figūros
 		*		funkcija reikalauja figūros pavadinimo, spalvos ir koordinatės
@@ -10,17 +26,9 @@
 		*					1.2.1) tikrina ar naujoje pozicijoje esanti figūra yra priešingos spalvos užvestajai. Esant priešingai spalvai kreipiamasi į funkciją pazymeti_langeli. Perduodama naujos padėties koordinatė ir rodiklis 2
 		*						1.2.1.1) funkcija pazymeti_langeli priešingos spalvos figūros koordinatėje nuspalvina foną pagal rodiklį 2 (raudonai)
 		*/
-		
-		
-		
-		
-		
-		
-		
-		
-		function bigImg(figura,spalva,koord) {	
-
-			galimybes = new Figura ( new Padetis ( koord ),figura, spalva );
+		function bigImg ( figura, spalva, koord ) {	
+			
+			galimybes = make_figura ( figura, spalva, koord );
 			
 			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {
 			
@@ -45,9 +53,10 @@
 		}
 		
 		function normalImg(figura,spalva,koord) {
+			
 			rodiklis = 0;
 			 
-			galimybes = new Figura ( new Padetis ( koord ),figura, spalva );
+			galimybes = make_figura ( figura, spalva, koord );
 			 
 			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {
 			
