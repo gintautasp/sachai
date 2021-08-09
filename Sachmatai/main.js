@@ -53,26 +53,24 @@
 			
 			galimybes = lst_figuros [ koord ];
 			
-			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {
+			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {																// imame po viena galima ejima
 			
-				nauja_padetis = galimybes.naujaPadetisPagalGalimaEjima ( i );
+				nauja_padetis = galimybes.naujaPadetisPagalGalimaEjima ( i );															// pasiimame ejimo padėtį
 				
-				if ( ( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() == "" ) )  {  // langelis tuščias ? 
+				if ( ( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() == "" ) )  {  									// ar langelis į kurį eitume tuščias ? 
 					
 					rodiklis = 1;
-					pazymeti_langeli ( nauja_padetis, rodiklis ); 
-					
+					pazymeti_langeli ( nauja_padetis, rodiklis );																		// jie tuščias, pažyme kaip galimą ėjimo langelį ( rodiklis = 1 ) 
 				}
 				
 				if ( 
-						( nauja_padetis != galimybes.padetis_esama )  // ar nera bereikalinga
+						( nauja_padetis != galimybes.padetis_esama )  																// ar nera bereikalinga
 					&& 
 						( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() != "" ) 
 				) {
 					
 					if ( 
-						 
-							// ( document.getElementById ( nauja_padetis.koordinate() ).getAttribute( "onmouseover" ) ).slice ( 11, 12 ) 
+																														// ( document.getElementById ( nauja_padetis.koordinate() ).getAttribute( "onmouseover" ) ).slice ( 11, 12 ) 
 							lst_figuros [ nauja_padetis.koordinate() ].spalva
 						 
 						!= 
