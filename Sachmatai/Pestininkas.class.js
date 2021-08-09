@@ -3,6 +3,8 @@
 		
 		this.spalva = spalva;
 		
+		this.simboliai = [  '&#x265F;',  '&#x2659;' ];
+		
 		this.padetis_esama = padetis_esama;		
 	
 		eiles_nr = this.padetis_esama.vert;

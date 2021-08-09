@@ -1,4 +1,6 @@
 
+		lst_figuros = {}
+
 		function make_figura ( figura, spalva, koord ) {
 			
 			switch ( figura ) {
@@ -12,6 +14,27 @@
 			}			
 			return galimybes;
 		}
+		
+		function pazymeti_langeli ( nauja_padetis, rodiklis ){
+			
+			koordinate = nauja_padetis.horiz + nauja_padetis.vert ;
+			
+			if ( rodiklis == 1 ) {
+				
+					document.getElementById ( koordinate ).style.backgroundColor = 'blue';
+				
+			}else { 
+				
+				if ( rodiklis == 2 ){
+				
+					document.getElementById ( koordinate ).style.backgroundColor = 'red';
+					
+				} else {
+					
+					document.getElementById ( koordinate ).removeAttribute( 'style' );
+				}
+			}
+		}		
 
 		/**
 		*	Pelytės užvedimui ir nuvedimui ant figūros reikalingos funkcijos + spalvinimas
@@ -26,37 +49,49 @@
 		*					1.2.1) tikrina ar naujoje pozicijoje esanti figūra yra priešingos spalvos užvestajai. Esant priešingai spalvai kreipiamasi į funkciją pazymeti_langeli. Perduodama naujos padėties koordinatė ir rodiklis 2
 		*						1.2.1.1) funkcija pazymeti_langeli priešingos spalvos figūros koordinatėje nuspalvina foną pagal rodiklį 2 (raudonai)
 		*/
-		function bigImg ( figura, spalva, koord ) {	
+		function rodyti_ejimus ( koord ) {	
 			
-			galimybes = make_figura ( figura, spalva, koord );
+			galimybes = lst_figuros [ koord ];
 			
 			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {
 			
 				nauja_padetis = galimybes.naujaPadetisPagalGalimaEjima ( i );
 				
-				
-				if ((document.getElementById(nauja_padetis.koordinate()).innerHTML.trim() == ""))  {
+				if ( ( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() == "" ) )  {  // langelis tuščias ? 
 					
 					rodiklis = 1;
-					pazymeti_langeli ( nauja_padetis,rodiklis ); 
+					pazymeti_langeli ( nauja_padetis, rodiklis ); 
 					
-				}if (( nauja_padetis != galimybes.padetis_esama )&&(document.getElementById(nauja_padetis.koordinate()).innerHTML.trim() != "")) {
+				}
+				
+				if ( 
+						( nauja_padetis != galimybes.padetis_esama )  // ar nera bereikalinga
+					&& 
+						( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() != "" ) 
+				) {
 					
-					if(((document.getElementById(nauja_padetis.koordinate()).getAttribute("onmouseover")).slice(11,12))!=spalva){
+					if ( 
+						 
+							// ( document.getElementById ( nauja_padetis.koordinate() ).getAttribute( "onmouseover" ) ).slice ( 11, 12 ) 
+							lst_figuros [ nauja_padetis.koordinate() ].spalva
+						 
+						!= 
+							galimybes.spalva 
+					
+					) {
 						
 						rodiklis = 2;
-					
-						pazymeti_langeli ( nauja_padetis,rodiklis ); 
+						pazymeti_langeli ( nauja_padetis, rodiklis ); 
 					}
 				}
 			}
 		}
 		
-		function normalImg(figura,spalva,koord) {
+		function slepti_ejimus ( koord ) {
 			
 			rodiklis = 0;
 			 
-			galimybes = make_figura ( figura, spalva, koord );
+			galimybes = lst_figuros [ koord ];
 			 
 			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {
 			
@@ -64,23 +99,35 @@
 				
 				if ( nauja_padetis != galimybes.padetis_esama ) {
 					
-					pazymeti_langeli ( nauja_padetis,rodiklis ); 
-			
+					pazymeti_langeli ( nauja_padetis, rodiklis );
 				}
 			}
 		}
 		
-		function pazymeti_langeli ( nauja_padetis, rodiklis ){
-			
-			koordinate =nauja_padetis.horiz +nauja_padetis.vert ;
-			
-			if (rodiklis ==1){
+		function sudelioti ( figuros, spalva ) {
+		
+			for ( i = 0; i < figuros.length; i++ ) {
 				
-					document.getElementById ( koordinate).style.backgroundColor="blue";
-			}else if (rodiklis ==2){
+				figuros_reiksme = figuros [ i ].slice ( 0, 1 );
+				figuros_koordinate = figuros [ i ].slice ( 1, 3 );
 				
-					document.getElementById ( koordinate).style.backgroundColor="red";
-			}else{
-				document.getElementById ( koordinate).removeAttribute("style");
+				lst_figuros [ figuros_koordinate  ] = make_figura ( figuros_reiksme, spalva, figuros_koordinate );
+				
+				vieta = document.getElementById ( figuros_koordinate );
+				
+				vieta.setAttribute ( "onmouseover", "rodyti_ejimus('"+figuros_koordinate +"')" ); 
+				vieta.setAttribute ( "onmouseout", "slepti_ejimus('" + figuros_koordinate +"')" ); 
+				
+				vieta.innerHTML = lst_figuros [ figuros_koordinate ].simboliai [ parseInt ( spalva ) ] ;
 			}
-		}
+			console.log ( lst_figuros );
+		}		
+		
+		function sudaryti() {
+
+			juodieji = document.getElementById ( 'juodieji' ).value.split ( ',' );
+			baltieji = document.getElementById ( 'baltieji' ).value.split ( ',' );
+
+			sudelioti ( baltieji, '1' );
+			sudelioti ( juodieji, '0' );			
+		}		
