@@ -1,6 +1,6 @@
 
-		lst_figuros = {}
-
+		lst_figuros = {}															// sukuriama tuscia struktura
+		
 		function make_figura ( figura, spalva, koord ) {
 			
 			switch ( figura ) {
@@ -15,23 +15,24 @@
 			return galimybes;
 		}
 		
-		function pazymeti_langeli ( nauja_padetis, rodiklis ){
+		function pazymeti_langeli ( nauja_padetis, rodiklis ){								//pazymi langelį pagal naujos padėties koordinates ir rodiklį, kuris nurodo spalvą arba stiliaus elementų panaikinimą
 			
-			koordinate = nauja_padetis.horiz + nauja_padetis.vert ;
+			koordinate = nauja_padetis.horiz + nauja_padetis.vert ;						// apjjungia naujos padėties vertikalę ir horizontalę į vieną koordinatės elementą
 			
-			if ( rodiklis == 1 ) {
+			if ( rodiklis == 1 ) {													// rodiklis gali būti 1 tik, kai naujo ėjimo langelis tuščias
 				
 					document.getElementById ( koordinate ).style.backgroundColor = 'blue';
 				
-			}else { 
+			}else { 															// jei rodiklies nėra ==1 
 				
-				if ( rodiklis == 2 ){
+				if ( rodiklis == 2 ){												// tikrina ar rodiklis == 2	
 				
-					document.getElementById ( koordinate ).style.backgroundColor = 'red';
+					document.getElementById ( koordinate ).style.backgroundColor = 'red';	// jei rodiklis ==2, tai reiškia, kad langelyje yra  priešingos spalvos figūra. Jos foną spalvina raudonai
 					
 				} else {
 					
-					document.getElementById ( koordinate ).removeAttribute( 'style' );
+					document.getElementById ( koordinate ).removeAttribute( 'style' );		// jei rodiklis nėra lygus 1 ar 2 (pagal nutylėjima paduodama 0 reikšmė) nuo paduotų koordinačių nuimami stiliaus atributai
+																			// fono spalva grįžta į pradinę
 				}
 			}
 		}		
@@ -60,19 +61,15 @@
 				if ( ( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() == "" ) )  {  									// ar langelis į kurį eitume tuščias ? 
 					
 					rodiklis = 1;
-					pazymeti_langeli ( nauja_padetis, rodiklis );																		// jie tuščias, pažyme kaip galimą ėjimo langelį ( rodiklis = 1 ) 
+					pazymeti_langeli ( nauja_padetis, rodiklis );																	// jie tuščias, pažyme kaip galimą ėjimo langelį ( rodiklis = 1 ) 
 				}
 				
-				if ( 
-						( nauja_padetis != galimybes.padetis_esama )  																// ar nera bereikalinga
-					&& 
-						( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() != "" ) 
-				) {
+				if ( ( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() != "" ) ) {										// tikrina ar langelis užimtas
 					
 					if ( 
-																														// ( document.getElementById ( nauja_padetis.koordinate() ).getAttribute( "onmouseover" ) ).slice ( 11, 12 ) 
-							lst_figuros [ nauja_padetis.koordinate() ].spalva
-						 
+																														// jei langelyje esančios figūros spalva yra priešinga
+							lst_figuros [ nauja_padetis.koordinate() ].spalva															// užvestosios, langelį nuspalvina raudonai.
+																														// rodiklis =2
 						!= 
 							galimybes.spalva 
 					
@@ -85,7 +82,7 @@
 			}
 		}
 		
-		function slepti_ejimus ( koord ) {
+		function slepti_ejimus ( koord ) {																						// nuvedus nuo figūros panaikina stiliaus atributus nuo visų jos galimų pozicijų
 			
 			rodiklis = 0;
 			 
@@ -94,38 +91,36 @@
 			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {
 			
 				nauja_padetis = galimybes.naujaPadetisPagalGalimaEjima ( i );
-				
-				if ( nauja_padetis != galimybes.padetis_esama ) {
 					
-					pazymeti_langeli ( nauja_padetis, rodiklis );
-				}
+				pazymeti_langeli ( nauja_padetis, rodiklis );
+				
 			}
 		}
 		
-		function sudelioti ( figuros, spalva ) {
+		function sudelioti ( figuros, spalva ) {																		// sudeda figūras, gautas iš funkcijos sudaryti, į įvedime nurodytas koordinates
 		
-			for ( i = 0; i < figuros.length; i++ ) {
+			for ( i = 0; i < figuros.length; i++ ) {																	// ciklas leidžiamas pagal gautų figūrų skaičių
 				
-				figuros_reiksme = figuros [ i ].slice ( 0, 1 );
-				figuros_koordinate = figuros [ i ].slice ( 1, 3 );
+				figuros_reiksme = figuros [ i ].slice ( 0, 1 );															// imamas figūros pirmas simbolis, kuris nurodo figūros pavadinimą
+				figuros_koordinate = figuros [ i ].slice ( 1, 3 );															// imamas figūros antrasis ir trečiasis simbolis. Jie kartu sudaro koordinatę lentoje
 				
-				lst_figuros [ figuros_koordinate  ] = make_figura ( figuros_reiksme, spalva, figuros_koordinate );
+				lst_figuros [ figuros_koordinate ] = make_figura ( figuros_reiksme, spalva, figuros_koordinate );						// į lst_figuros masyva talpinami elementai pagal ID(koordintę). Kiekvienas elementas saugo figūros reikšmę, spalvą, koordinatę
 				
-				vieta = document.getElementById ( figuros_koordinate );
-				
-				vieta.setAttribute ( "onmouseover", "rodyti_ejimus('"+figuros_koordinate +"')" ); 
-				vieta.setAttribute ( "onmouseout", "slepti_ejimus('" + figuros_koordinate +"')" ); 
-				
-				vieta.innerHTML = lst_figuros [ figuros_koordinate ].simboliai [ parseInt ( spalva ) ] ;
+				vieta = document.getElementById ( figuros_koordinate );													// kintamajasis vieta pasiima iš sachmatai_standart.html ID, kuris lygus figūros_koordinate 
+					
+				vieta.setAttribute ( "onmouseover", "rodyti_ejimus('" + figuros_koordinate + "')" ); 									// turimam ID priskiriami atributai pelytės užvedimui ir nuvedimui
+				vieta.setAttribute ( "onmouseout", "slepti_ejimus('" + figuros_koordinate + "')" ); 									// užvedus aktyvuojama funkcija rodyti_ejimus su jau įvesta esama koordinate
+																											// nuvedus aktyvuojama funkcija slepti_ejimus, kuri turi tą pačią koordinatę
+				vieta.innerHTML = lst_figuros [ figuros_koordinate ].simboliai [ parseInt ( spalva ) ] ;								// į lentą sudedamos figūros pagal koordinatę, figūrą ir spalvą
 			}
-			console.log ( lst_figuros );
+			console.log ( lst_figuros );				//pasitikrinimui
 		}		
 		
-		function sudaryti() {
+		function sudaryti() {																					// paspaudus mygtuką sudaryti imamos reikšmės iš juodųjų ir baltųjų text lauko
 
-			juodieji = document.getElementById ( 'juodieji' ).value.split ( ',' );
+			juodieji = document.getElementById ( 'juodieji' ).value.split ( ',' );												// jas splitina pagal kablelį
 			baltieji = document.getElementById ( 'baltieji' ).value.split ( ',' );
 
-			sudelioti ( baltieji, '1' );
+			sudelioti ( baltieji, '1' );																				// gautos reikšmės paduodamos į funkciją sudėlioti ir prie jų pridedamas spalvos skaičius
 			sudelioti ( juodieji, '0' );			
 		}		
