@@ -1,23 +1,35 @@
 
 	function Langelis() {
-		
-		this.pasiimti = function ( koordinate ) {
-			
-			return document.getElementById ( koordinate );
-		}
-		
+	
 		this.parodytiKaipGalimaEjima = function ( koordinate ) {
 			
-			this.pasiimti ( koordinate ).style.backgroundColor = 'blue';
+			nustatyti_spalva ( koordinate, 'blue' );
 		}
 		
 		this.parodytiKaipGalimaKirtima = function ( koordinate ) {
 			
-			this.pasiimti ( koordinate ).style.backgroundColor = 'red';
+			nustatyti_spalva ( koordinate,  'red' );
 		}
 		
 		this.parodytiPaprastai = function ( koordinate ) {
 			
-			this.pasiimti ( koordinate ).removeAttribute( 'style' );
+			parodyti_paprastai ( koordinate )
 		}
 	}
+	
+	function Langelisx() {
+		
+
+		this.parodytiKaipGalimaKirtima = function ( koordinate ) {
+			
+			nustatyti_spalva_jq ( koordinate,  'red' );
+		}
+		
+		this.parodytiPaprastai = function ( koordinate ) {
+			
+			parodyti_paprastai ( koordinate )
+		}
+	}
+	
+	
+	
