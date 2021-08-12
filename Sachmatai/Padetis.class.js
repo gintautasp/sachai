@@ -60,5 +60,10 @@
 			return this.horiz + this.vert;
 		}
 		
+		this.yraTuscia = function() {
+			
+			return ( document.getElementById ( this.koordinate() ).innerHTML.trim() == "" );
+		}
+		
 	}
 
