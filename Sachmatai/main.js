@@ -1,6 +1,8 @@
 
 		lst_figuros = {}															// sukuriama tuscia struktura
 		
+		langelis = new Langelis();
+		
 		function make_figura ( figura, spalva, koord ) {
 			
 			switch ( figura ) {
@@ -15,28 +17,6 @@
 			return galimybes;
 		}
 		
-		function pazymeti_langeli ( nauja_padetis, rodiklis ){								//pazymi langelį pagal naujos padėties koordinates ir rodiklį, kuris nurodo spalvą arba stiliaus elementų panaikinimą
-			
-			koordinate = nauja_padetis.horiz + nauja_padetis.vert ;						// apjjungia naujos padėties vertikalę ir horizontalę į vieną koordinatės elementą
-			
-			if ( rodiklis == 1 ) {													// rodiklis gali būti 1 tik, kai naujo ėjimo langelis tuščias
-				
-					document.getElementById ( koordinate ).style.backgroundColor = 'blue';
-				
-			}else { 															// jei rodiklies nėra ==1 
-				
-				if ( rodiklis == 2 ){												// tikrina ar rodiklis == 2	
-				
-					document.getElementById ( koordinate ).style.backgroundColor = 'red';	// jei rodiklis ==2, tai reiškia, kad langelyje yra  priešingos spalvos figūra. Jos foną spalvina raudonai
-					
-				} else {
-					
-					document.getElementById ( koordinate ).removeAttribute( 'style' );		// jei rodiklis nėra lygus 1 ar 2 (pagal nutylėjima paduodama 0 reikšmė) nuo paduotų koordinačių nuimami stiliaus atributai
-																			// fono spalva grįžta į pradinę
-				}
-			}
-		}		
-
 		/**
 		*	Pelytės užvedimui ir nuvedimui ant figūros reikalingos funkcijos + spalvinimas
 		*	
@@ -54,45 +34,34 @@
 			
 			galimybes = lst_figuros [ koord ];
 			
-			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {																// imame po viena galima ejima
+			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {														// imame po viena galima ejima
 			
-				nauja_padetis = galimybes.naujaPadetisPagalGalimaEjima ( i );															// pasiimame ejimo padėtį
+				nauja_padetis = galimybes.naujaPadetisPagalGalimaEjima ( i );												// pasiimame ejimo padėtį
 				
-				if ( ( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() == "" ) )  {  									// ar langelis į kurį eitume tuščias ? 
+				if ( nauja_padetis.yraTuscia() )  {  																	// ar langelis į kurį eitume tuščias ? 
 					
-					rodiklis = 1;
-					pazymeti_langeli ( nauja_padetis, rodiklis );																	// jie tuščias, pažyme kaip galimą ėjimo langelį ( rodiklis = 1 ) 
+					langelis.parodytiKaipGalimaEjima ( nauja_padetis.koordinate() );
 				}
 				
-				if ( ( document.getElementById ( nauja_padetis.koordinate() ).innerHTML.trim() != "" ) ) {										// tikrina ar langelis užimtas
+				if ( ! nauja_padetis.yraTuscia() ) {																	// tikrina ar langelis užimtas
 					
-					if ( 
-																														// jei langelyje esančios figūros spalva yra priešinga
-							lst_figuros [ nauja_padetis.koordinate() ].spalva															// užvestosios, langelį nuspalvina raudonai.
-																														// rodiklis =2
-						!= 
-							galimybes.spalva 
-					
-					) {
+					if ( lst_figuros [ nauja_padetis.koordinate() ].yraKitosSpalvos ( galimybes.spalva ) ) {
 						
-						rodiklis = 2;
-						pazymeti_langeli ( nauja_padetis, rodiklis ); 
+						langelis.parodytiKaipGalimaKirtima ( nauja_padetis.koordinate() );
 					}
 				}
 			}
 		}
 		
-		function slepti_ejimus ( koord ) {																						// nuvedus nuo figūros panaikina stiliaus atributus nuo visų jos galimų pozicijų
+		function slepti_ejimus ( koord ) {																			// nuvedus nuo figūros panaikina stiliaus atributus nuo visų jos galimų pozicijų
 			
-			rodiklis = 0;
-			 
 			galimybes = lst_figuros [ koord ];
 			 
 			for ( i = 0; i < galimybes.galimuEjimuSkaicius(); i++ ) {
 			
 				nauja_padetis = galimybes.naujaPadetisPagalGalimaEjima ( i );
 					
-				pazymeti_langeli ( nauja_padetis, rodiklis );
+				langelis.parodytiPaprastai ( nauja_padetis.koordinate() );
 				
 			}
 		}

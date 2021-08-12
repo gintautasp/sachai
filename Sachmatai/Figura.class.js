@@ -2,6 +2,9 @@
 	function Figura() {	
 
 		this.padetis_esama = new Padetis ( "a1" );										// bet kokia reiksme
+		
+		this.spalva = '-1';
+		
 		this.ejimo_pokyciai = [];														// priskiriamas tuscias masyvas
 		
 		this.galimuEjimuSkaicius = function() {											// metodas ejimu skaiciui gauti
@@ -20,6 +23,12 @@
 			
 			return nauja_padetis;
 		}	
+		
+		this.yraKitosSpalvos = function ( spalva ) {
+			
+			// jei langelyje esančios figūros spalva yra priešinga	// užvestosios, langelį nuspalvina raudonai.	// rodiklis =2																						
+			return ( this.spalva != spalva );
+		}
 		
 	}
 	/*  		arba galime daryti taip
