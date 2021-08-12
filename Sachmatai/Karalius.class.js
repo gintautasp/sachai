@@ -1,14 +1,15 @@
 
 
-	function Karalius (  padetis_esama, spalva ) {
+	function Karalius (  padetis_esama, spalva ) {									// reikalina esama padetis ir spalvos nr. ( 0-1)
+			
+		this.spalva = spalva;													// i�saugoma paduota spalva, kaip kintamasis
 		
-		this.spalva = spalva;
+		this.padetis_esama = padetis_esama;									// i�saugoma paduota koordinate, kaip kintamasis
 		
-		this.simboliai = [ '&#x265A;', '&#x2654;' ];
+		this.simboliai = [ '&#x265A;', '&#x2654;' ];								// dvieju spalvu variantu masyvas ( 0 juoda, 1 balta)
 		
-		this.padetis_esama = padetis_esama;
-		
-		this.ejimo_pokyciai = [ { horiz: -1, vert: 1 }, { horiz: 0, vert: 1 }, { horiz: 1, vert: 1 }, { horiz: 1, vert: 0 }, { horiz: 1, vert: -1}, { horiz: 0, vert: -1 }, { horiz: -1, vert: -1 }, { horiz: -1, vert: 0 } ];
+		this.ejimo_pokyciai = [												// visi galimi figuros ejimai
+		 		{ horiz: -1, vert: 1 }, { horiz: 0, vert: 1 }, { horiz: 1, vert: 1 }, { horiz: 1, vert: 0 }, { horiz: 1, vert: -1}, { horiz: 0, vert: -1 }, { horiz: -1, vert: -1 }, { horiz: -1, vert: 0 } ];
 	}
 	
-	Karalius.prototype = new Figura();
+	Karalius.prototype = new Figura();											// nustatomas Figuros klases paveldejimas
