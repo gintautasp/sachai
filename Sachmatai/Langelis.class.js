@@ -17,19 +17,6 @@
 		}
 	}
 	
-	function Langelisx() {
-		
 
-		this.parodytiKaipGalimaKirtima = function ( koordinate ) {
-			
-			nustatyti_spalva_jq ( koordinate,  'red' );
-		}
-		
-		this.parodytiPaprastai = function ( koordinate ) {
-			
-			parodyti_paprastai ( koordinate )
-		}
-	}
-	
 	
 	
